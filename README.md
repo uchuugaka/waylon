@@ -58,15 +58,6 @@ views:
 You can deploy locally, on your LAN, or push the whole thing to Heroku if you
 have a public Jenkins instance.
 
-For development, running `rackup` will launch the app with WEBrick on port 9292:
-
-```
-$ bundle exec rackup
-[2014-05-15 10:36:33] INFO  WEBrick 1.3.1
-[2014-05-15 10:36:33] INFO  ruby 2.1.1 (2014-02-24) [x86_64-darwin13.0]
-[2014-05-15 10:36:33] INFO  WEBrick::HTTPServer#start: pid=41331 port=9292
-```
-
 For deploying the app, you might consider Unicorn, modifying
 `config/unicorn.rb` as needed. In it's absolute simplest form, this is:
 
@@ -109,6 +100,18 @@ $ bundle exec foreman start
 ![Waylon radiator screenshot (builds)](http://rogerignazio.com/projects/waylon/waylon-screenshot-builds.png)
 ![Waylon radiator screenshot (nirvana)](http://rogerignazio.com/projects/waylon/waylon-screenshot-nirvana.png)
 ![Waylon radiator screenshot (trouble)](http://rogerignazio.com/projects/waylon/waylon-screenshot-trouble.png)
+
+## Development
+See the [CONTRIBUTING](CONTRIBUTING.md) doc.
+
+For development, running `rackup` will launch the app with WEBrick on port 9292:
+
+```
+$ bundle exec rackup
+[2014-05-15 10:36:33] INFO  WEBrick 1.3.1
+[2014-05-15 10:36:33] INFO  ruby 2.1.1 (2014-02-24) [x86_64-darwin13.0]
+[2014-05-15 10:36:33] INFO  WEBrick::HTTPServer#start: pid=41331 port=9292
+```
 
 ## Author
 Roger Ignazio (me@rogerignazio.com)
