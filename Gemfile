@@ -8,6 +8,7 @@ gem 'memcached',          '~> 1.8'
 
 group :development do
   gem 'foreman'
+  gem 'shotgun'
 end
 
 if File.exists? "#{__FILE__}.local"
