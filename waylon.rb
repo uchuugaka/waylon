@@ -18,9 +18,13 @@ class Waylon < Sinatra::Application
   helpers do
     # Read configuration in from YAML
     def gen_config
-      root = File.dirname(__FILE__)
-      config = YAML.load_file(File.join(root, 'config/waylon.yml'))
-      Waylon::Config::RootConfig.from_hash(config)
+      if File.exists?('/etc/waylon.yml')
+        config = '/etc/waylon.yml'
+      else
+        config = File.join(File.dirname(__FILE__), 'config/waylon.yml')
+      end
+
+      Waylon::Config::RootConfig.from_hash(YAML.load_file(config))
     end
 
     # Generate a list of views
