@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files`.split("\n")
   s.require_paths = ['lib']
 
-  s.required_ruby_version = '~> 2.0'
+  s.required_ruby_version = '~> 2.1.0'
 
   s.add_runtime_dependency 'sinatra',            '~> 1.4'
   s.add_runtime_dependency 'jenkins_api_client', '~> 1.0'
