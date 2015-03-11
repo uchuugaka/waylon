@@ -13,10 +13,8 @@ Gem::Specification.new do |s|
   s.description   = s.summary
   s.license       = 'Apache License, Version 2.0'
 
-  #s.files         = `git ls-files`.split('\n')
-  #s.require_paths = ['lib']
-  #s.bindir        = 'bin'
-  #s.executables   = 'waylon'
+  s.files         = `git ls-files`.split("\n")
+  s.require_paths = ['lib']
 
   s.required_ruby_version = '~> 2.0'
 
