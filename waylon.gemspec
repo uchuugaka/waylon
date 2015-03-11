@@ -18,6 +18,8 @@ Gem::Specification.new do |s|
   #s.bindir        = 'bin'
   #s.executables   = 'waylon'
 
+  s.required_ruby_version = '~> 2.0'
+
   s.add_dependency 'sinatra',            '~> 1.4.5'
   s.add_dependency 'jenkins_api_client', '~> 1.0.1'
 end
