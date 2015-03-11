@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.1.0 (2015/03/11)
+This release contains fixes to better deploy Waylon. For a complete list,
+see <https://github.com/rji/waylon/compare/v2.0.0...v2.1.0>.
+
 ## 2.0.0 (2014/12/08)
 There were a lot of changes for this release. The largest have been summarized
 here. Otherwise, check out the compare on GitHub.
