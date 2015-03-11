@@ -18,24 +18,38 @@ Waylon is a dashboard to display the status of your Jenkins builds.
   `trouble_threshold` jobs are red (default is disabled)
 
 ## Setup
-_Waylon is not currently distributed via Rubygems, but we hope to do so in the
-future._
-
-The easiest way to get up and running with Waylon is to clone the repo from
-GitHub:
+Clone the repo from GitHub:
 
 ```
 git clone https://github.com/rji/waylon
 ```
 
-Generally, the master branch should work, but it's also where we do most of our
-development. If you want to check out a specific release, try:
+Or install via Rubygems:
+
+```
+gem install waylon
+```
+
+Generally, the master branch _should_ work, but it's also where we do most of
+our development. If you want to check out a specific release, try:
 
 ```
 git clone https://github.com/rji/waylon -b v2.0.0
 ```
 
-Modify `config/waylon.yml` to point to your Jenkins install, and enter any job
+## Configuration
+Waylon will first attempt to use a configuration file located at
+`/etc/waylon.yml`. However, if one does not exist, it will fallback to looking
+for the config relative to the application root, at `config/waylon.yml`.
+
+An example config file is located at `config/waylon.yml.example`.
+
+For logging, Waylon will first attempt to log to `/var/log/waylon`, if it
+exists. Otherwise, it will fallback to logging relative to the application root,
+in the `logs/` directory. Two files will be created: `waylon.out` and
+`waylon.err`, for stdout and stderr (respectively).
+
+Modify `waylon.yml` to point to your Jenkins install, and enter any job
 names or Jenkins views that you wish to display. For the most part, it's
 self-explanatory, but here's an example for a few of
 [Puppet Labs](http://www.puppetlabs.com)' FOSS projects:
@@ -54,22 +68,16 @@ views:
         - 'Hiera-Specs-master'
 ```
 
-## Deploy
-You can deploy locally, on your LAN, or push the whole thing to Heroku if you
-have a public Jenkins instance.
+## Deployment
+The fastest way to get up and running with Waylon is to use the
+[rji/waylon](https://forge.puppetlabs.com/rji/waylon) Puppet module.
 
-For deploying the app, you might consider Unicorn, modifying
-`config/unicorn.rb` as needed. In it's absolute simplest form, this is:
+For deploying the app, we have built-in support for Unicorn, a popular Ruby
+application server. A standard configuration is located at `config/unicorn.rb`
+and shouldn't need to be modified under normal circumstances.
 
-```
-$ bundle exec unicorn -c config/unicorn.rb
-I, [2014-05-15T10:38:08.425598 #41334]  INFO -- : listening on addr=0.0.0.0:8080 fd=9
-I, [2014-05-15T10:38:08.425707 #41334]  INFO -- : worker=0 spawning...
-I, [2014-05-15T10:38:08.426279 #41334]  INFO -- : worker=1 spawning...
-```
-
-Running `bundle exec foreman start` will run the application using the Unicorn
-configuration provided at `config/unicorn.rb`.
+Otherwise, running `bundle exec foreman start` will launch memcached and Unicorn
+as specified in the `Procfile`.
 
 ## Memcached
 Waylon can use memcached to reduce the number of requests against Jenkins.
