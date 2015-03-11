@@ -1,8 +1,10 @@
 .DS_Store
+.env
+*.gem
 *.swp
-logs/
 config/waylon.yml
 Gemfile.local
 Gemfile.lock
-*.gem
-.env
+.bundle/
+logs/
+vendor/
