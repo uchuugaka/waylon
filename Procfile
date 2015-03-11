@@ -1,2 +1,2 @@
-web: bundle exec rackup -p $PORT
+web: bundle exec unicorn -c config/unicorn.rb
 memcache: memcached -s ./tmp/memcached.sock

@@ -1,9 +1,11 @@
 require 'fileutils'
 
 # Log location
-FileUtils.mkdir('./logs') unless File.exists?('./logs')
-stderr_path './logs/waylon.log'
-stdout_path './logs/waylon.log'
+log_dir = File.join(File.dirname(__FILE__), '../logs')
+
+FileUtils.mkdir(log_dir) unless File.exists?(log_dir)
+stderr_path File.join(log_dir, 'waylon.err')
+stdout_path File.join(log_dir, 'waylon.out')
 
 # Number of worker processes to launch.
 # Generally speaking, launching two per CPU core is fine.
