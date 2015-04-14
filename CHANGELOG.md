@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.1.1 (2015/04/14)
+This release contains fixes to Waylon's included `unicorn.rb` config file, for
+a better experience when launching Waylon from an init script.
+  - 8f6d0da - unicorn config should specify `working_directory`
+
 ## 2.1.0 (2015/03/11)
 This release contains fixes to better deploy Waylon. For a complete list,
 see <https://github.com/rji/waylon/compare/v2.0.0...v2.1.0>.

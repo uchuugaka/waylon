@@ -5,7 +5,7 @@ require 'waylon/version'
 Gem::Specification.new do |s|
   s.name          = 'waylon'
   s.version       = Waylon::VERSION
-  s.date          = '2015-03-11'
+  s.date          = '2015-04-14'
   s.authors       = ['Roger Ignazio']
   s.email         = ['me@rogerignazio.com']
   s.homepage      = 'https://github.com/rji/waylon'
