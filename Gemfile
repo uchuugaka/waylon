@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
-gem 'sinatra',            '~> 1.4'
-gem 'unicorn',            '~> 4.8'
-gem 'jenkins_api_client', '~> 1.0'
-gem 'deterministic',      '~> 0.6'
-gem 'memcached',          '~> 1.8'
+gem 'sinatra',            '~> 1.4.5'
+gem 'unicorn',            '~> 4.8.3'
+gem 'jenkins_api_client', '~> 1.0.1'
+gem 'deterministic',      '~> 0.6.0'
+gem 'memcached',          '~> 1.8.0'
 
 group :development do
   gem 'foreman'
