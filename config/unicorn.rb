@@ -1,5 +1,7 @@
 require 'fileutils'
 
+working_directory File.expand_path('..', File.dirname(__FILE__))
+
 # Log location
 if File.exists?('/var/log/waylon')
   log_dir = '/var/log/waylon'
@@ -17,5 +19,5 @@ worker_processes 4
 
 # Timeout, in seconds.
 # This should be less than Waylon's `refresh_interval`
-timeout 55
+timeout 60
 
