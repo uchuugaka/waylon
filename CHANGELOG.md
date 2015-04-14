@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.1.2 (2015/04/14)
+This release reintroduces pessimistic versioning of dependencies.
+  - a7817f9 - pessmisitic versioning of deps (reverts bc20b84)
+
 ## 2.1.1 (2015/04/14)
 This release contains fixes to Waylon's included `unicorn.rb` config file, for
 a better experience when launching Waylon from an init script.
