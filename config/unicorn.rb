@@ -1,6 +1,9 @@
 require 'fileutils'
 
-working_directory File.expand_path('..', File.dirname(__FILE__))
+app_root = File.expand_path('..', File.dirname(__FILE__))
+
+working_directory app_root
+pid ENV['PID'] || "#{app_root}/tmp/unicorn.pid"
 
 # Log location
 if File.exists?('/var/log/waylon')
