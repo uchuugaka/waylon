@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2.1.3 (2015/04/16)
+This commit contains a minor fix to the provided `config/unicorn.rb` config
+file so that the Unicorn app server always creates a PID file. The location
+is customizable via the `$PID` environment variable, such as when Unicorn is
+launched via an init script.
+  - 2f593f0 - Unicorn should always create a pid file
+
 ## 2.1.2 (2015/04/14)
 This release reintroduces pessimistic versioning of dependencies.
   - a7817f9 - pessmisitic versioning of deps (reverts bc20b84)

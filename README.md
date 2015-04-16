@@ -34,7 +34,7 @@ Generally, the master branch _should_ work, but it's also where we do most of
 our development. If you want to check out a specific release, try:
 
 ```
-git clone https://github.com/rji/waylon -b v2.0.0
+git clone https://github.com/rji/waylon -b v2.1.3
 ```
 
 ## Configuration
