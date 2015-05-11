@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.1.4 (2015/05/11)
+This releases fixes an issue present since v2.0.0 that resulted in a build's
+ETA not being calculated correctly.
+  - 50932c6 - (fixup) fix eta query broken by 9badacc
+
 ## 2.1.3 (2015/04/16)
 This commit contains a minor fix to the provided `config/unicorn.rb` config
 file so that the Unicorn app server always creates a PID file. The location
