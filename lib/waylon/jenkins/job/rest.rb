@@ -31,7 +31,7 @@ class Waylon
 
         def progress_pct
           # Note that 'timestamp' available the Jenkins API is returned in ms
-          start_time   = client.api_get_request("/job/#{@name}/lastBuild", nil, '/api/json?depth = 1&tree = timestamp')['timestamp'] / 1000.0
+          start_time   = client.api_get_request("/job/#{@name}/lastBuild", nil, '/api/json?depth=1&tree=timestamp')['timestamp'] / 1000.0
           progress_pct = ((Time.now.to_i - start_time) / est_duration) * 100
 
           # The above math isn't perfect, and Jenkins is probably a bit janky.
