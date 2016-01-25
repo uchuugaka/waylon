@@ -1,4 +1,5 @@
 # Waylon
+[![Gem Version](https://badge.fury.io/rb/waylon.svg)](https://badge.fury.io/rb/waylon)
 [![Stories in Ready](https://badge.waffle.io/rji/waylon.svg?label=ready&title=Ready)](http://waffle.io/rji/waylon)
 
 Waylon is a dashboard to display the status of your Jenkins builds.
