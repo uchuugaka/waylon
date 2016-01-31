@@ -72,7 +72,39 @@ views:
 ```
 
 ## Deployment
-The fastest way to get up and running with Waylon is to use the
+### Docker
+The easiest way to deploy Waylon is by using the
+[rji/waylon](https://hub.docker.com/r/rogerignazio/waylon) Docker image,
+setting the `$WAYLON_CONFIG` environment variable to a URL containing a
+`waylon.yml` configuration file, like so:
+
+```
+$ docker run    \
+  -p 8080:8080  \
+  -e WAYLON_CONFIG="https://gist.githubusercontent.com/rji/60fe93333247ef46542e/raw/waylon.yml" \
+  rji/waylon:v2.1.4
+```
+
+Otherwise, if you'd like to build your own image that contains `waylon.yml` so
+that you don't need to fetch it at container run time, you can base your image
+off of mine:
+
+```Dockerfile
+FROM rogerignazio/waylon:v2.1.4
+MAINTAINER You <you@example.com>
+
+ADD myconfig.yaml /usr/local/waylon/config/waylon.yml
+CMD bundle exec foreman start
+```
+
+Then launch the container:
+
+```
+$ docker run -p 8080:80 exampleorg/waylon
+```
+
+### On a dedicated server
+If you're using Puppet, you might want to check out the
 [rji/waylon](https://forge.puppetlabs.com/rji/waylon) Puppet module.
 
 For deploying the app, we have built-in support for Unicorn, a popular Ruby

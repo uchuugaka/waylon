@@ -1,0 +1,8 @@
+.git
+.gitignore
+CHANGELOG.md
+CONTRIBUTING.md
+Procfile.development
+README.md
+waylon.gemspec
+config/waylon.yml.example
