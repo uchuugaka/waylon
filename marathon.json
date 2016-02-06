@@ -1,0 +1,30 @@
+{
+    "id": "/waylon",
+    "instances": 1,
+    "cpus": 1.0,
+    "mem": 2048.0,
+    "env": {
+        "WAYLON_CONFIG": "https://gist.githubusercontent.com/rji/60fe93333247ef46542e/raw/waylon.yml"
+    },
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "image": "rji/waylon:v2.1.4",
+            "network": "BRIDGE",
+            "portMappings": [
+                { "containerPort": 8080, "hostPort": 0 }
+            ]
+        }
+    },
+    "healthChecks": [
+        {
+            "protocol": "HTTP",
+            "portIndex": 0,
+            "path": "/",
+            "gracePeriodSeconds": 60,
+            "intervalSeconds": 60,
+            "timeoutSeconds": 10,
+            "maxConsecutiveFailures": 3
+        }
+    ]
+}

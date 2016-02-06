@@ -97,10 +97,14 @@ ADD myconfig.yaml /usr/local/waylon/config/waylon.yml
 CMD bundle exec foreman start
 ```
 
-Then launch the container:
+### Marathon (Mesos / DCOS)
+To complement the Docker image, there is an example `marathon.json` included
+in the root of this repository. To deploy Waylon on
+[Marathon](https://mesosphere.github.io/marathon), set the value of
+`$WAYLON_CONFIG` and create a new Marathon application like so:
 
 ```
-$ docker run -p 8080:80 exampleorg/waylon
+$ curl -H 'Content-Type: application/json' -X POST -d @marathon.json http://marathon.example.com/v2/apps
 ```
 
 ### On a dedicated server
