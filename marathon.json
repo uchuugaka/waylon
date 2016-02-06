@@ -9,7 +9,7 @@
     "container": {
         "type": "DOCKER",
         "docker": {
-            "image": "rji/waylon:v2.1.4",
+            "image": "rogerignazio/waylon:v2.1.4",
             "network": "BRIDGE",
             "portMappings": [
                 { "containerPort": 8080, "hostPort": 0 }
