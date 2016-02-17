@@ -1,5 +1,6 @@
 .git
 .gitignore
+assets
 CHANGELOG.md
 CONTRIBUTING.md
 Procfile.development
