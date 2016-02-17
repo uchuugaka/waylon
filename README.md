@@ -144,9 +144,9 @@ $ bundle exec foreman start
 ```
 
 ## Screenshots
-![Waylon radiator screenshot (builds)](http://rogerignazio.com/projects/waylon/waylon-screenshot-builds.png)
-![Waylon radiator screenshot (nirvana)](http://rogerignazio.com/projects/waylon/waylon-screenshot-nirvana.png)
-![Waylon radiator screenshot (trouble)](http://rogerignazio.com/projects/waylon/waylon-screenshot-trouble.png)
+![Waylon radiator screenshot (builds)](assets/waylon-screenshot-builds.png)
+![Waylon radiator screenshot (nirvana)](assets/waylon-screenshot-nirvana.png)
+![Waylon radiator screenshot (trouble)](assets/waylon-screenshot-trouble.png)
 
 ## Development
 See the [CONTRIBUTING](CONTRIBUTING.md) doc.
