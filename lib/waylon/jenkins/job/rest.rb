@@ -70,14 +70,9 @@ class Waylon
         end
 
         def description
-          @client.job.get_build_details(@name, last_build_num)['description']
+          @job_build_details ||= @client.job.get_build_details(@name, last_build_num)
+          @job_build_details['description']
         end
-
-        def last_build_display_name
-          f = @client.job.get_build_details(@name, last_build_num)['fullDisplayName']
-          return "##{f.split('#')[-1]}"
-        end
-
 
         # Has this job ever been built?
         # @return [Boolean]
@@ -126,7 +121,6 @@ class Waylon
               'last_build_num'          => last_build_num,
               'investigating'           => investigating?,
               'description'             => description,
-              'last_build_display_name' => last_build_display_name,
               'health'                  => health,
             })
           end
