@@ -85,6 +85,10 @@ class Waylon
           @disabled = job_details['color'] == "disabled"
         end
 
+        def last_build_timestamp
+          @client.job.get_build_details(@name, last_build_num)['timestamp']
+        end
+
         def last_build_num
           job_details['lastBuild']['number']
         end
@@ -117,6 +121,7 @@ class Waylon
 
           if built?
             h.merge!({
+              'last_build_timestamp'    => last_build_timestamp,
               'last_build_num'          => last_build_num,
               'investigating'           => investigating?,
               'description'             => description,

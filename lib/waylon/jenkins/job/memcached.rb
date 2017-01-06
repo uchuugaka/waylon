@@ -29,6 +29,10 @@ class Waylon
         def description
           @description ||= cache("job-#{name}-description") { super }
         end
+
+        def last_build_timestamp
+          @last_build_timestamp ||= cache("job-#{name}-last-build-timestamp") { super }
+        end
       end
     end
   end
