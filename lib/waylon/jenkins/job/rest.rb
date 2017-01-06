@@ -70,8 +70,7 @@ class Waylon
         end
 
         def description
-          @job_build_details ||= @client.job.get_build_details(@name, last_build_num)
-          @job_build_details['description']
+          @job_build_description ||= @client.job.get_build_details(@name, last_build_num)['description']
         end
 
         # Has this job ever been built?
