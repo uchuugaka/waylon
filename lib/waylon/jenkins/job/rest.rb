@@ -26,13 +26,13 @@ class Waylon
 
         def est_duration
           # estimatedDuration is returned in ms; here we convert it to seconds
-          client.api_get_request("/job/#{@name}/lastBuild", nil, '/api/json?depth=1&tree=estimatedDuration')['estimatedDuration'] / 1000
+          @est_duration ||= client.api_get_request("/job/#{URI.escape @name}/lastBuild", nil, '/api/json?depth=1&tree=estimatedDuration')['estimatedDuration'] / 1000
         end
 
         def progress_pct
           # Note that 'timestamp' available the Jenkins API is returned in ms
-          start_time   = client.api_get_request("/job/#{@name}/lastBuild", nil, '/api/json?depth=1&tree=timestamp')['timestamp'] / 1000.0
-          progress_pct = ((Time.now.to_i - start_time) / est_duration) * 100
+          @start_time ||= client.api_get_request("/job/#{URI.escape @name}/lastBuild", nil, '/api/json?depth=1&tree=timestamp')['timestamp'] / 1000.0
+          progress_pct = ((Time.now.to_i - @start_time) / est_duration) * 100
 
           # The above math isn't perfect, and Jenkins is probably a bit janky.
           # Sometimes, we'll get numbers like -3 or 106. This corrects that.
@@ -158,7 +158,9 @@ class Waylon
         private
 
         def query!
-          client.job.list_details(@name)
+          # per cloudbees best practices we should never query the API/json base URL but rather use the tree parameter
+          # https://www.cloudbees.com/blog/taming-jenkins-json-api-depth-and-tree
+          client.api_get_request("/job/#{URI.escape @name}","tree=displayName,color,firstBuild,lastBuild[number],healthReport[*],url")
         rescue JenkinsApi::Exceptions::NotFound
           raise Waylon::Errors::NotFound
         end
