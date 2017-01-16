@@ -2,7 +2,7 @@ class Waylon
   module Jenkins
     class Server
       require 'waylon/jenkins/server/rest'
-      require 'waylon/jenkins/server/memcached'
+      require 'waylon/jenkins/server/memcached' unless !!File::ALT_SEPARATOR
 
       attr_reader :config
 
