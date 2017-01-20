@@ -151,6 +151,30 @@ $ bundle exec foreman start
 ## Development
 See the [CONTRIBUTING](CONTRIBUTING.md) doc.
 
+### Using foreman
+
+For development, running `foreman` will launch the app, with memcached, on Port 5000:
+
+```
+$ bundle exec foreman start --procfile Procfile.development
+10:36:33 web.1      | [2014-05-15 10:36:33] INFO  WEBrick 1.3.1
+10:36:33 memcache.1 | Starting memcached
+10:36:33 web.1      | [2014-05-15 10:36:33] INFO  ruby 2.1.1 (2014-02-24) [x86_64-darwin13.0]
+10:36:33 web.1      | [2014-05-15 10:36:33] INFO  WEBrick::HTTPServer#start: pid=41331 port=9292
+```
+### Using foreman on Windows
+
+For development, running `foreman` will launch the app on Port 5000:
+
+``` powershell
+PS> bundle exec foreman start --procfile Procfile.windows
+10:20:43 web.1  | started with pid 13472
+10:20:46 web.1  | [2017-01-17 10:20:46] INFO  WEBrick 1.3.1
+10:20:46 web.1  | [2017-01-17 10:20:46] INFO  ruby 2.3.0 (2015-12-25) [x64-mingw32]
+10:20:46 web.1  | [2017-01-17 10:20:46] INFO  WEBrick::HTTPServer#start: pid=5148 port=5000
+```
+
+### Using rack
 For development, running `rackup` will launch the app with WEBrick on port 9292:
 
 ```

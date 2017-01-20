@@ -2,7 +2,7 @@ class Waylon
   module Jenkins
     class Job
       require 'waylon/jenkins/job/rest'
-      require 'waylon/jenkins/job/memcached'
+      require 'waylon/jenkins/job/memcached' unless !!File::ALT_SEPARATOR
 
       attr_reader :name
       attr_reader :server
