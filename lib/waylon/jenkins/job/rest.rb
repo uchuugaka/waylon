@@ -73,7 +73,7 @@ class Waylon
         end
 
         def description
-          return nil unless job_build_details['description']
+          return nil unless job_build_details
           @job_build_description ||= job_build_details['description']
         end
 
@@ -90,7 +90,7 @@ class Waylon
         end
 
         def last_build_timestamp
-          return nil unless job_build_details['timestamp']
+          return nil unless job_build_details
           @last_build_timestamp ||= job_build_details['timestamp']
         end
 
