@@ -60,9 +60,8 @@ class Waylon
           # after it has completed. Using estimatedDuration and the
           # executor progress (in percentage), we can calculate the ETA.
           if progress_pct != -1 then
-            t      = (est_duration - (est_duration * (progress_pct / 100.0)))
-            mm, ss = t.divmod(60)
-            return "#{mm}m #{ss.floor}s"
+            t = (est_duration - (est_duration * (progress_pct / 100.0)))
+            pretty_timespan(t,false)
           else
             'unknown'
           end
@@ -74,6 +73,7 @@ class Waylon
         end
 
         def description
+          return nil unless job_build_details['description']
           @job_build_description ||= job_build_details['description']
         end
 
@@ -90,7 +90,13 @@ class Waylon
         end
 
         def last_build_timestamp
+          return nil unless job_build_details['timestamp']
           @last_build_timestamp ||= job_build_details['timestamp']
+        end
+
+        def since_last_build
+          # Figure out the number of seconds between the last_build_timestamp and now.
+          pretty_timespan(Time.now.to_i - Time.at(last_build_timestamp / 1000).to_i ,true)
         end
 
         def last_build_num
@@ -126,6 +132,7 @@ class Waylon
           if built?
             h.merge!({
               'last_build_timestamp'    => last_build_timestamp,
+              'since_last_build'        => since_last_build,
               'last_build_num'          => last_build_num,
               'investigating'           => investigating?,
               'description'             => description,
@@ -135,8 +142,9 @@ class Waylon
 
           if status == 'running'
             h.merge!({
-              'progress_pct' => progress_pct,
-              'eta'          => eta,
+              'progress_pct'     => progress_pct,
+              'eta'              => eta,
+              'since_last_build' => nil,
             })
           else
             h.merge!({
@@ -160,6 +168,25 @@ class Waylon
         end
 
         private
+
+        # Returns a timespan, expressed as the number of seconds elapsed as pretty string
+        #  Optionally ignore the seconds in the string
+        #  e.g.  2d 6h 45m 28s
+        # @return [String]
+        def pretty_timespan(timespan, ignore_seconds = false)
+          dd, hh, mm, ss = [timespan/86400, timespan/3600%24, timespan/60%60, timespan%60].map! { |x| x.floor }
+          pretty = ''
+          if dd > 0
+            pretty = "#{dd}d #{hh}h #{mm}m"
+          elsif hh > 0
+            pretty = "#{hh}h #{mm}m"
+          else
+            pretty = "#{mm}m"
+          end
+          pretty =+ " #{ss}s" unless ignore_seconds
+
+          pretty.strip
+        end
 
         def query!
           # per cloudbees best practices we should never query the API/json base URL but rather use the tree parameter
