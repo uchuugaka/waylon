@@ -16,6 +16,10 @@ class Waylon
           @job_details ||= query!
         end
 
+        def job_build_details
+          @job_build_details ||= query_build!
+        end
+
         def status
           if disabled?
             "disabled"
@@ -69,7 +73,8 @@ class Waylon
         end
 
         def description
-          @job_build_description ||= @client.job.get_build_details(@name, last_build_num)['description']
+          return nil unless job_build_details
+          @job_build_description ||= job_build_details['description']
         end
 
         # Has this job ever been built?
@@ -85,7 +90,8 @@ class Waylon
         end
 
         def last_build_timestamp
-          @last_build_timestamp ||= @client.job.get_build_details(@name, last_build_num)['timestamp']
+          return nil unless job_build_details
+          @last_build_timestamp ||= job_build_details['timestamp']
         end
 
         def since_last_build
@@ -178,7 +184,7 @@ class Waylon
             pretty = "#{mm}m"
           end
           pretty =+ " #{ss}s" unless ignore_seconds
-          
+
           pretty.strip
         end
 
@@ -186,6 +192,14 @@ class Waylon
           # per cloudbees best practices we should never query the API/json base URL but rather use the tree parameter
           # https://www.cloudbees.com/blog/taming-jenkins-json-api-depth-and-tree
           client.api_get_request("/job/#{URI.escape @name}","tree=displayName,color,firstBuild,lastBuild[number],healthReport[*],url")
+        rescue JenkinsApi::Exceptions::NotFound
+          raise Waylon::Errors::NotFound
+        end
+
+        def query_build!
+          # per cloudbees best practices we should never query the API/json base URL but rather use the tree parameter
+          # https://www.cloudbees.com/blog/taming-jenkins-json-api-depth-and-tree
+          client.api_get_request("/job/#{URI.escape @name}/#{last_build_num}","tree=description,timestamp")
         rescue JenkinsApi::Exceptions::NotFound
           raise Waylon::Errors::NotFound
         end
