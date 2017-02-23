@@ -183,7 +183,7 @@ class Waylon
           else
             pretty = "#{mm}m"
           end
-          pretty =+ " #{ss}s" unless ignore_seconds
+          pretty += " #{ss}s" unless ignore_seconds
 
           pretty.strip
         end
