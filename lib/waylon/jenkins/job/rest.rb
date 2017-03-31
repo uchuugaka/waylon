@@ -16,6 +16,10 @@ class Waylon
           @job_details ||= query!
         end
 
+        def job_build_details
+          @job_build_details ||= query_build!
+        end
+
         def status
           if disabled?
             "disabled"
@@ -26,13 +30,13 @@ class Waylon
 
         def est_duration
           # estimatedDuration is returned in ms; here we convert it to seconds
-          client.api_get_request("/job/#{@name}/lastBuild", nil, '/api/json?depth=1&tree=estimatedDuration')['estimatedDuration'] / 1000
+          @est_duration ||= client.api_get_request("/job/#{URI.escape @name}/lastBuild", nil, '/api/json?depth=1&tree=estimatedDuration')['estimatedDuration'] / 1000
         end
 
         def progress_pct
           # Note that 'timestamp' available the Jenkins API is returned in ms
-          start_time   = client.api_get_request("/job/#{@name}/lastBuild", nil, '/api/json?depth=1&tree=timestamp')['timestamp'] / 1000.0
-          progress_pct = ((Time.now.to_i - start_time) / est_duration) * 100
+          @start_time ||= client.api_get_request("/job/#{URI.escape @name}/lastBuild", nil, '/api/json?depth=1&tree=timestamp')['timestamp'] / 1000.0
+          progress_pct = ((Time.now.to_i - @start_time) / est_duration) * 100
 
           # The above math isn't perfect, and Jenkins is probably a bit janky.
           # Sometimes, we'll get numbers like -3 or 106. This corrects that.
@@ -56,9 +60,8 @@ class Waylon
           # after it has completed. Using estimatedDuration and the
           # executor progress (in percentage), we can calculate the ETA.
           if progress_pct != -1 then
-            t      = (est_duration - (est_duration * (progress_pct / 100.0)))
-            mm, ss = t.divmod(60)
-            return "#{mm}m #{ss.floor}s"
+            t = (est_duration - (est_duration * (progress_pct / 100.0)))
+            pretty_timespan(t,false)
           else
             'unknown'
           end
@@ -70,14 +73,9 @@ class Waylon
         end
 
         def description
-          @client.job.get_build_details(@name, last_build_num)['description']
+          return nil unless job_build_details
+          @job_build_description ||= job_build_details['description']
         end
-
-        def last_build_display_name
-          f = @client.job.get_build_details(@name, last_build_num)['fullDisplayName']
-          return "##{f.split('#')[-1]}"
-        end
-
 
         # Has this job ever been built?
         # @return [Boolean]
@@ -89,6 +87,16 @@ class Waylon
         # @return [Boolean]
         def disabled?
           @disabled = job_details['color'] == "disabled"
+        end
+
+        def last_build_timestamp
+          return nil unless job_build_details
+          @last_build_timestamp ||= job_build_details['timestamp']
+        end
+
+        def since_last_build
+          # Figure out the number of seconds between the last_build_timestamp and now.
+          pretty_timespan(Time.now.to_i - Time.at(last_build_timestamp / 1000).to_i ,true)
         end
 
         def last_build_num
@@ -123,18 +131,20 @@ class Waylon
 
           if built?
             h.merge!({
+              'last_build_timestamp'    => last_build_timestamp,
+              'since_last_build'        => since_last_build,
               'last_build_num'          => last_build_num,
               'investigating'           => investigating?,
               'description'             => description,
-              'last_build_display_name' => last_build_display_name,
               'health'                  => health,
             })
           end
 
           if status == 'running'
             h.merge!({
-              'progress_pct' => progress_pct,
-              'eta'          => eta,
+              'progress_pct'     => progress_pct,
+              'eta'              => eta,
+              'since_last_build' => nil,
             })
           else
             h.merge!({
@@ -159,8 +169,37 @@ class Waylon
 
         private
 
+        # Returns a timespan, expressed as the number of seconds elapsed as pretty string
+        #  Optionally ignore the seconds in the string
+        #  e.g.  2d 6h 45m 28s
+        # @return [String]
+        def pretty_timespan(timespan, ignore_seconds = false)
+          dd, hh, mm, ss = [timespan/86400, timespan/3600%24, timespan/60%60, timespan%60].map! { |x| x.floor }
+          pretty = ''
+          if dd > 0
+            pretty = "#{dd}d #{hh}h #{mm}m"
+          elsif hh > 0
+            pretty = "#{hh}h #{mm}m"
+          else
+            pretty = "#{mm}m"
+          end
+          pretty += " #{ss}s" unless ignore_seconds
+
+          pretty.strip
+        end
+
         def query!
-          client.job.list_details(@name)
+          # per cloudbees best practices we should never query the API/json base URL but rather use the tree parameter
+          # https://www.cloudbees.com/blog/taming-jenkins-json-api-depth-and-tree
+          client.api_get_request("/job/#{URI.escape @name}","tree=displayName,color,firstBuild,lastBuild[number],healthReport[*],url")
+        rescue JenkinsApi::Exceptions::NotFound
+          raise Waylon::Errors::NotFound
+        end
+
+        def query_build!
+          # per cloudbees best practices we should never query the API/json base URL but rather use the tree parameter
+          # https://www.cloudbees.com/blog/taming-jenkins-json-api-depth-and-tree
+          client.api_get_request("/job/#{URI.escape @name}/#{last_build_num}","tree=description,timestamp")
         rescue JenkinsApi::Exceptions::NotFound
           raise Waylon::Errors::NotFound
         end
